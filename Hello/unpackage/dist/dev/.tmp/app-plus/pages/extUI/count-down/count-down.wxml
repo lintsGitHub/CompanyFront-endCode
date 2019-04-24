@@ -1,0 +1,2 @@
+<import src="./count-down.vue.wxml" />
+    <template is="7faa7fd8" data="{{ ...$root['0'], $root }}"/>

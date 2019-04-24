@@ -1,0 +1,2 @@
+<import src="./nav-search-input.vue.wxml" />
+    <template is="345b7ed7" data="{{ ...$root['0'], $root }}"/>

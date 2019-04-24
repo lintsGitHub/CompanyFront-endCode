@@ -1,0 +1,2 @@
+<import src="./audio.vue.wxml" />
+    <template is="a19685e4" data="{{ ...$root['0'], $root }}"/>

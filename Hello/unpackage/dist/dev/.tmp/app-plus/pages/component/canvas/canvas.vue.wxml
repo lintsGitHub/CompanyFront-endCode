@@ -1,0 +1,1 @@
+<import src="/components/page-head.vue.wxml" /><template name="3903be60"><view class="_view 3903be60"><template data="{{...$root['0'], ...$root[$kk+'3903be60-0'],$root}}" is="2f71d397"></template><view class="_view 3903be60 page-body"><view class="_view 3903be60 page-body-wrapper"><canvas canvas-id="canvas" class="_canvas 3903be60 canvas"></canvas></view></view></view></template>
