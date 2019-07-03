@@ -8,6 +8,27 @@
 <import src="/components/uni-nav-bar/uni-nav-bar.vue.wxml" />
 <import src="/components/uni-icon/uni-icon.vue.wxml" />
 <import src="/components/uni-drawer/uni-drawer.vue.wxml" />
+<import src="/components/uni-status-bar/uni-status-bar.vue.wxml" />
+<import src="/common/slots.wxml" />
+<import src="/components/page-head.vue.wxml" />
+<import src="/components/uni-fab.vue.wxml" />
+<import src="/components/page-foot.vue.wxml" />
+<import src="/components/im-chat/messageshow.vue.wxml" />
+<import src="/components/im-chat/chatinput.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate1.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseVideo.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseAudio.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseImg.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate2.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate3.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate4.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate5.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate6.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate7.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate8.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate9.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate10.vue.wxml" />
+<import src="/components/uParse/src/components/wxParseTemplate11.vue.wxml" />
 
 <template name="47fcb238-default-47fcb238-0"><view class="_view 47fcb238 cont">SwipeAction 基础使用场景</view></template>
 

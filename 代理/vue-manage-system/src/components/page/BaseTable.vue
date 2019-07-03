@@ -8,13 +8,14 @@
         <div class="container">
             <div class="handle-box">
                 <el-button type="primary" icon="delete" class="handle-del mr10" @click="delAll">批量删除</el-button>
-                <el-select v-model="select_cate" placeholder="筛选省份" class="handle-select mr10">
-                    <el-option key="1" label="广东省" value="广东省"></el-option>
-                    <el-option key="2" label="湖南省" value="湖南省"></el-option>
+                <el-select v-model="select_cate" @change="rowsChange" placeholder="显示条数" class="handle-select mr10">
+                    <el-option key="1" label="10" value="10"></el-option>
+                    <el-option key="2" label="20" value="20"></el-option>
                 </el-select>
                 <el-input v-model="select_word" placeholder="筛选关键词" class="handle-input mr10"></el-input>
                 <el-button type="primary" icon="search" @click="search">搜索</el-button>
 				<el-button type="primary" @click="addUser">添加会员</el-button>
+				
             </div>
             <el-table :data="data" border class="table" ref="multipleTable" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
@@ -22,11 +23,11 @@
                 </el-table-column>
                 <el-table-column prop="vip_AN" label="会员名" width="120">
                 </el-table-column>
-				<el-table-column prop="vip_email" label="邮箱" width="120">
+				<el-table-column prop="vip_email" label="邮箱" width="200">
 				</el-table-column>
 				<el-table-column prop="status_id" label="状态" width="120">
 				</el-table-column>
-                  <el-table-column prop="vip_CDT" label="日期" sortable width="150">
+                  <el-table-column prop="vip_CDT" label="日期" sortable width="200">
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template slot-scope="scope">
@@ -35,10 +36,12 @@
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- <div class="pagination">
+			
+			</el-form-item>
+            <div class="pagination">
                 <el-pagination background @current-change="handleCurrentChange" layout="prev, pager, next" :total="1000">
                 </el-pagination>
-            </div> -->
+            </div>
         </div>
 		
 		<!-- 添加弹出框 -->
@@ -120,13 +123,13 @@
         name: 'basetable',
         data() {
             return {
-                url: '/api/VIP/GetAllVIP',
+                url: 'http://localhost:58561/VIP/GetAllVIP',
 				// 总数据
                 tableData: [],
 				// 分页
                 cur_page: 1,
                 multipleSelection: [],
-                select_cate: '',
+                select_cate: 10,
                 select_word: '',
                 del_list: [],
                 is_search: false,
@@ -168,7 +171,7 @@
                         }
                     }
                     if (!is_del) {
-                        if (d.vip_mp.indexOf(this.select_cate) > -1 &&
+                        if (d.vip_mp.indexOf(this.select_word) > -1 &&
                             (d.vip_AN.indexOf(this.select_word) > -1 ||
                                 d.vip_email.indexOf(this.select_word) > -1)
                         ) {
@@ -184,6 +187,11 @@
                 this.cur_page = val;
                 this.getData();
             },
+			// 显示条数
+			rowsChange(val){
+				this.select_cate = val;
+				this.getData();
+			},
             // 获取 easy-mock 的模拟数据
             getData() {
                 // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
@@ -200,11 +208,17 @@
 				   console.log()
 			   }) */
 			   // 开发环境使用 easy-mock 数据，正式环境使用 json 文件
-			   
-                
-                this.$axios.get(this.url, {
-                    // page: this.cur_page
-                }).then((res) => {
+// 			   const params = new URLSearchParams()
+// 			   params.append('page',this.cur_page) 
+// 			   params.append('rows',30)
+                const  page = this.cur_page
+				const rows = this.select_cate
+                this.$axios.get(this.url,{
+					 params: {
+						 'rows' : rows,
+						 'page' : page
+					 }
+				}).then((res) => {
 					// console.log(res)
                     this.tableData = res.data.rows;
 					
@@ -264,7 +278,9 @@
             },
             // 保存编辑
             saveEdit() {
-                this.$set(this.tableData, this.idx, this.form);
+                // this.$set(this.tableData, this.idx, this.form);
+				console.log(this.tableData[this.idx])
+				console.log(this.form.vip_AN)
                 this.editVisible = false;
                 this.$message.success(`修改第 ${this.idx+1} 行成功`);
             },
@@ -281,22 +297,37 @@
 			},
 			// 添加会员
 			saveAdd(){
+				// 创建一个params对象,来进行前后端数据交换
 				var params = new URLSearchParams()
 				params.append('vip_id',0) 
 				params.append('vip_AN',this.adduser.vip_AN)
 				params.append('vip_mp',this.adduser.vip_mp)
 				params.append('vip_Email',this.adduser.vip_Email)
 				params.append('vip_pwd',this.adduser.vip_pwd)
-				params.append('status_id',1)
-				params.append('agent_id', 0)
+				if(this.adduser.status_id === '启用'){
+					params.append('status_id',1)
+				}else{
+					params.append('status_id',2)
+				}
+				
+				params.append('agent_id', localStorage.getItem('AgentID'))
 // 				const vip_mp = this.adduser.vip_mp
 // 				const vip_Email = this.adduser.vip_Email
-				this.$axios.post('/api/VIP/Signin',params).then(function(res){
-					console.log(res)
+				
+				
+
+				// 发送post请求,添加会员
+				this.$axios.post('/api/VIP/Signin',params).then((res) => {
+					let msgs = res.data.success;
+					if(msgs){
+						this.getData();
+						this.addVisible = false
+						this.$message.success('添加成功');
+					}else{
+						this.$message.success('添加失败');
+					}
 				})
-				this.tableData.splice(this.idx, 0,this.adduser);
-				this.addVisible = false
-				this.$message.success('添加成功');
+				// this.tableData.splice(this.idx, 0,this.adduser);
 			}
         }
     }
